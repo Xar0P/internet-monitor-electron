@@ -12,9 +12,14 @@ export interface Speedtest {
   date: string
 }
 
+export interface Config {
+  directoryToSave: string
+}
+
 const api = {
   speedTest: async (): Promise<Speedtest> => await speedTest(),
-  selectDirectory: (): void => selectDirectory()
+  selectDirectory: (): void => selectDirectory(),
+  readSummaryFile: async (): Promise<Speedtest[] | null> => await readSummaryFile()
 }
 
 if (process.contextIsolated) {
@@ -31,6 +36,35 @@ if (process.contextIsolated) {
   window.api = api
 }
 
+const getUserConfig = (callback: (config: Config) => void): void => {
+  ipcRenderer.send('userConfig')
+  ipcRenderer.on('userConfig', (_, config: Config) => {
+    callback(config)
+  })
+}
+
+let directory = ''
+
+getUserConfig((config) => {
+  directory = config.directoryToSave
+})
+
+const readSummaryFile = async (): Promise<Speedtest[] | null> => {
+  const path = `${directory}/recent.json`
+
+  if (existsSync(path)) {
+    try {
+      const data = await fsPromises.readFile(path, 'utf-8')
+      const json: Array<Speedtest> = JSON.parse(data)
+      return json
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  return null
+}
+
 const saveFile = (result: any, path: string, today: Date, isLimited = false): Speedtest => {
   const speedData = {
     download: result.downloadSpeed,
@@ -44,7 +78,7 @@ const saveFile = (result: any, path: string, today: Date, isLimited = false): Sp
       const json = JSON.parse(data)
 
       if (isLimited) {
-        if (json.length >= 4) {
+        if (json.length >= 20) {
           json.shift()
           json.push(speedData)
         } else {
@@ -80,13 +114,6 @@ const speedTest = async (): Promise<Speedtest> => {
         resolve(stdout ? stdout : stderr)
       })
     })
-
-  let directory = ''
-
-  ipcRenderer.send('userConfig')
-  ipcRenderer.on('userConfig', (_, config) => {
-    directory = config.directoryToSave
-  })
 
   const result = JSON.parse(await fastTest())
   const today = new Date(Date.now())

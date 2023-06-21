@@ -6,6 +6,7 @@ declare global {
     api: {
       speedTest: () => Promise<Speedtest>
       selectDirectory: () => void
+      readSummaryFile: () => Promise<Speedtest[] | null>
     }
   }
 }

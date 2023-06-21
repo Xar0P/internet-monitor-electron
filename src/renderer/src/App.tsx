@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { SpeedChart } from './components/Charts'
 
@@ -15,6 +15,12 @@ function App(): JSX.Element {
 
   const speedTestFC = async (): Promise<void> => setSpeedtest(await window.api.speedTest())
   const selectDirectory = (): void => window.api.selectDirectory()
+
+  useEffect(() => {
+    ;(async (): Promise<void> => {
+      console.log(await window.api.readSummaryFile())
+    })()
+  }, [])
 
   return (
     <div className="container">
