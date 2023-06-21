@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 import { exec } from 'child_process'
@@ -8,6 +9,7 @@ export interface Speedtest {
   ping: string
   download: string
   upload: string
+  date: string
 }
 
 const api = {
@@ -27,6 +29,47 @@ if (process.contextIsolated) {
   window.electron = electronAPI
   // @ts-ignore (define in dts)
   window.api = api
+}
+
+const saveFile = (result: any, path: string, today: Date, isLimited = false): Speedtest => {
+  const speedData = {
+    download: result.downloadSpeed,
+    upload: result.uploadSpeed,
+    ping: result.latency,
+    date: today.toISOString()
+  }
+
+  if (existsSync(path)) {
+    fsPromises.readFile(path, 'utf-8').then((data) => {
+      const json = JSON.parse(data)
+
+      if (isLimited) {
+        if (json.length >= 4) {
+          json.shift()
+          json.push(speedData)
+        } else {
+          json.push(speedData)
+        }
+      } else {
+        json.push(speedData)
+      }
+
+      fsPromises
+        .writeFile(path, JSON.stringify(json, null, 2))
+        .then((data) => console.log(data))
+        .catch((err) => console.log(err))
+    })
+  } else {
+    fsPromises
+      .writeFile(path, JSON.stringify([speedData], null, 2))
+      .then((data) => {
+        // Criar um toast
+        console.log(data)
+      })
+      .catch((err) => console.log(err))
+  }
+
+  return speedData
 }
 
 const speedTest = async (): Promise<Speedtest> => {
@@ -49,35 +92,10 @@ const speedTest = async (): Promise<Speedtest> => {
   const today = new Date(Date.now())
   const fileName = today.toISOString().split('T')[0]
   const path = `${directory}/${fileName}.json`
+  const recent = `${directory}/recent.json`
 
-  const speedData = {
-    download: result.downloadSpeed,
-    upload: result.uploadSpeed,
-    ping: result.latency,
-    date: today.toISOString()
-  }
-
-  if (existsSync(path)) {
-    fsPromises.readFile(path, 'utf-8').then((data) => {
-      const json = JSON.parse(data)
-      json.push(speedData)
-
-      fsPromises
-        .writeFile(path, JSON.stringify(json, null, 2))
-        .then((data) => console.log(data))
-        .catch((err) => console.log(err))
-    })
-  } else {
-    fsPromises
-      .writeFile(path, JSON.stringify([speedData], null, 2))
-      .then((data) => {
-        // Criar um toast
-        console.log(data)
-      })
-      .catch((err) => console.log(err))
-  }
-
-  return speedData
+  saveFile(result, path, today)
+  return saveFile(result, recent, today, true)
 }
 
 const selectDirectory = (): void => {
