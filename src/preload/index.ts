@@ -30,8 +30,6 @@ if (process.contextIsolated) {
 }
 
 const speedTest = async (): Promise<Speedtest> => {
-  const path = '/home/xar0p/dev/internet-monitor-electron' + '/teste.json'
-
   const fastTest = (): Promise<string> =>
     new Promise((resolve) => {
       exec('npx fast --upload --json', (err, stdout, stderr) => {
@@ -42,6 +40,8 @@ const speedTest = async (): Promise<Speedtest> => {
 
   const result = JSON.parse(await fastTest())
   const today = new Date(Date.now())
+  const fileName = today.toISOString().split('T')[0]
+  const path = `/home/xar0p/dev/internet-monitor-electron/${fileName}.json`
 
   const speedData = {
     download: result.downloadSpeed,

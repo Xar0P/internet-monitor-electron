@@ -1,5 +1,5 @@
 import { ElectronAPI } from '@electron-toolkit/preload'
-import { Speedtest } from './index'
+import { Speedtest } from './'
 declare global {
   interface Window {
     electron: ElectronAPI
