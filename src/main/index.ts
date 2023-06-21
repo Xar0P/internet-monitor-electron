@@ -27,6 +27,12 @@ function createWindow(): void {
     return { action: 'deny' }
   })
 
+  ipcMain.on('userConfig', () => {
+    readConfigFile().then((config) => {
+      mainWindow.webContents.send('userConfig', config)
+    })
+  })
+
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
     mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
   } else {
@@ -41,10 +47,7 @@ app.whenReady().then(async () => {
     optimizer.watchWindowShortcuts(window)
   })
 
-  const configFile = await readConfigFile()
   createWindow()
-  console.log(configFile)
-  console.log(app.getPath('userData'))
 
   app.on('activate', function () {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
@@ -64,6 +67,7 @@ ipcMain.on('selectDirectory', () => {
 
   dir
     .then((path) => {
+      // Criar um toast
       console.log('Arquivo de configurações salvo')
       addToConfigFile('directoryToSave', path.filePaths[0])
     })

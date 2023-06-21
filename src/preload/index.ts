@@ -38,10 +38,17 @@ const speedTest = async (): Promise<Speedtest> => {
       })
     })
 
+  let directory = ''
+
+  ipcRenderer.send('userConfig')
+  ipcRenderer.on('userConfig', (_, config) => {
+    directory = config.directoryToSave
+  })
+
   const result = JSON.parse(await fastTest())
   const today = new Date(Date.now())
   const fileName = today.toISOString().split('T')[0]
-  const path = `/home/xar0p/dev/internet-monitor-electron/${fileName}.json`
+  const path = `${directory}/${fileName}.json`
 
   const speedData = {
     download: result.downloadSpeed,
@@ -64,6 +71,7 @@ const speedTest = async (): Promise<Speedtest> => {
     fsPromises
       .writeFile(path, JSON.stringify([speedData], null, 2))
       .then((data) => {
+        // Criar um toast
         console.log(data)
       })
       .catch((err) => console.log(err))
