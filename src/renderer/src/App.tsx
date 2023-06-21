@@ -1,13 +1,17 @@
 import { useState } from 'react'
 
+import { SpeedChart } from './components/Charts'
+
 export interface Speedtest {
   ping: string
   download: string
   upload: string
+  date: string
 }
 
 function App(): JSX.Element {
   const [speedTest, setSpeedtest] = useState<Speedtest | null>(null)
+  const [recentData, setRecentData] = useState<Array<Speedtest> | null>(null)
 
   const speedTestFC = async (): Promise<void> => setSpeedtest(await window.api.speedTest())
   const selectDirectory = (): void => window.api.selectDirectory()
@@ -26,6 +30,7 @@ function App(): JSX.Element {
         <p>{speedTest?.ping ? speedTest.ping : 'Carregando...'}</p>
       </div>
       <button onClick={selectDirectory}>Selecionar Diretório</button>
+      <SpeedChart />
     </div>
   )
 }
