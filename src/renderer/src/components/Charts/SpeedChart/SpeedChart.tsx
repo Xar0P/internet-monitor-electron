@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,6 +12,9 @@ import {
 import { Line } from 'react-chartjs-2'
 import { Container } from './SpeedChart.styles'
 import { AppContext } from '../../../contexts/App.context'
+import moment from 'moment'
+import { DefaultChart } from '../../../interfaces/DefaultChart.interface'
+import { DEFAULTCHART } from '../../../constants/DefaultChart.constant'
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
 
@@ -23,39 +26,36 @@ const options = {
     },
     title: {
       display: true,
-      text: 'Chart.js Line Chart'
+      text: 'Speedtest'
     }
   }
 }
 
 const SpeedChart: React.FC = () => {
+  const [data, setData] = useState<DefaultChart>(DEFAULTCHART)
   const { recentData } = useContext(AppContext)
 
-  if (recentData) {
-    console.log(recentData)
-  }
+  useEffect(() => {
+    const labels = recentData ? recentData.map((data) => moment(data.date).calendar()) : []
 
-  const labels = recentData ? recentData.map((data) => data.date) : []
-
-  console.log(labels)
-
-  const data = {
-    labels,
-    datasets: [
-      {
-        label: 'Download',
-        data: recentData ? recentData.map((data) => data.download) : [],
-        borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgba(255, 99, 132, 0.5)'
-      },
-      {
-        label: 'Upload',
-        data: recentData ? recentData.map((data) => data.upload) : [],
-        borderColor: 'rgb(53, 162, 235)',
-        backgroundColor: 'rgba(53, 162, 235, 0.5)'
-      }
-    ]
-  }
+    setData({
+      labels,
+      datasets: [
+        {
+          label: 'Download',
+          data: recentData ? recentData.map((data) => data.download) : [],
+          borderColor: 'rgb(255, 99, 132)',
+          backgroundColor: 'rgba(255, 99, 132, 0.5)'
+        },
+        {
+          label: 'Upload',
+          data: recentData ? recentData.map((data) => data.upload) : [],
+          borderColor: 'rgb(53, 162, 235)',
+          backgroundColor: 'rgba(53, 162, 235, 0.5)'
+        }
+      ]
+    })
+  }, [recentData])
 
   return (
     <Container>
