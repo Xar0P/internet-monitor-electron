@@ -1,13 +1,8 @@
 import { useEffect, useState } from 'react'
 
 import { SpeedChart } from './components/Charts'
-
-export interface Speedtest {
-  ping: string
-  download: string
-  upload: string
-  date: string
-}
+import { Speedtest } from './interfaces/Speedtest.interface'
+import { AppContext } from './contexts/App.context'
 
 function App(): JSX.Element {
   const [speedTest, setSpeedtest] = useState<Speedtest | null>(null)
@@ -18,26 +13,28 @@ function App(): JSX.Element {
 
   useEffect(() => {
     ;(async (): Promise<void> => {
-      console.log(await window.api.readSummaryFile())
+      setRecentData(await window.api.readSummaryFile())
     })()
   }, [])
 
   return (
-    <div className="container">
-      <button type="button" onClick={async (): Promise<void> => await speedTestFC()}>
-        Clique aqui
-      </button>
-      <div>
-        <h1>Velocidade de internet</h1>
-        <p>{speedTest?.download ? speedTest.download : 'Carregando...'}</p>
-        <h1>Velocidade de upload</h1>
-        <p>{speedTest?.upload ? speedTest.upload : 'Carregando...'}</p>
-        <h1>Ping</h1>
-        <p>{speedTest?.ping ? speedTest.ping : 'Carregando...'}</p>
+    <AppContext.Provider value={{ recentData }}>
+      <div className="container">
+        <button type="button" onClick={async (): Promise<void> => await speedTestFC()}>
+          Clique aqui
+        </button>
+        <div>
+          <h1>Velocidade de internet</h1>
+          <p>{speedTest?.download ? speedTest.download : 'Carregando...'}</p>
+          <h1>Velocidade de upload</h1>
+          <p>{speedTest?.upload ? speedTest.upload : 'Carregando...'}</p>
+          <h1>Ping</h1>
+          <p>{speedTest?.ping ? speedTest.ping : 'Carregando...'}</p>
+        </div>
+        <button onClick={selectDirectory}>Selecionar Diretório</button>
+        <SpeedChart />
       </div>
-      <button onClick={selectDirectory}>Selecionar Diretório</button>
-      <SpeedChart />
-    </div>
+    </AppContext.Provider>
   )
 }
 
