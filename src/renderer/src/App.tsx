@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import moment from 'moment'
-import { SpeedChart } from './components/Charts'
+import { PingChart, SpeedChart } from './components/Charts'
 import { Speedtest } from './interfaces/Speedtest.interface'
 import { AppContext } from './contexts/App.context'
 import { configPtBr } from './utils/momentjs-pt-br.utils'
@@ -57,6 +57,7 @@ function App(): JSX.Element {
           <p>{speedTest?.ping ? `${speedTest.ping}ms` : 'Carregando...'}</p>
         </div>
         <SpeedChart />
+        <PingChart />
         <button onClick={selectDirectory}>Selecionar Diretório</button>
       </div>
     </AppContext.Provider>
