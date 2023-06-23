@@ -48,15 +48,6 @@ function App(): JSX.Element {
   return (
     <AppContext.Provider value={appContext}>
       <div className="container">
-        <div>
-          <h1>Download</h1>
-          <p>{speedTest?.download ? `${speedTest.download}Mbps` : 'Carregando...'}</p>
-          <h1>Upload</h1>
-          <p>{speedTest?.upload ? `${speedTest.upload}Mbps` : 'Carregando...'}</p>
-          <h1>Ping</h1>
-          <p>{speedTest?.ping ? `${speedTest.ping}ms` : 'Carregando...'}</p>
-        </div>
-
         <button onClick={selectDirectory}>Selecionar Diretório</button>
 
         <Charts />
