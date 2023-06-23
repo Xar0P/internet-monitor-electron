@@ -66,7 +66,7 @@ const SpeedChart: React.FC = () => {
   const { recentData } = useContext(AppContext)
 
   useEffect(() => {
-    const labels = recentData ? recentData.map((data) => moment(data.date).calendar()) : []
+    const labels = recentData ? recentData.map((data) => moment(data.date).format('LT')) : []
 
     setData({
       labels,
