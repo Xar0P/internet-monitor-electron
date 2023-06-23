@@ -6,9 +6,9 @@ import fsPromises from 'fs/promises'
 import { existsSync } from 'fs'
 
 export interface Speedtest {
-  ping: string
-  download: string
-  upload: string
+  ping: number
+  download: number
+  upload: number
   date: string
 }
 

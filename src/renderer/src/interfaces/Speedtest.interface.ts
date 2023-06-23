@@ -1,6 +1,6 @@
 export interface Speedtest {
-  ping: string
-  download: string
-  upload: string
+  ping: number
+  download: number
+  upload: number
   date: string
 }

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import moment from 'moment'
-import { PingChart, SpeedChart } from './components/Charts'
+import { Charts } from './components/Charts'
 import { Speedtest } from './interfaces/Speedtest.interface'
 import { AppContext } from './contexts/App.context'
 import { configPtBr } from './utils/momentjs-pt-br.utils'
@@ -29,7 +29,7 @@ function App(): JSX.Element {
       ;(async (): Promise<void> => {
         setRecentData(await window.api.readSummaryFile())
       })()
-    }, 1000)
+    }, 5000)
 
     return () => clearInterval(interval)
   }, [])
@@ -56,9 +56,10 @@ function App(): JSX.Element {
           <h1>Ping</h1>
           <p>{speedTest?.ping ? `${speedTest.ping}ms` : 'Carregando...'}</p>
         </div>
-        <SpeedChart />
-        <PingChart />
+
         <button onClick={selectDirectory}>Selecionar Diretório</button>
+
+        <Charts />
       </div>
     </AppContext.Provider>
   )
