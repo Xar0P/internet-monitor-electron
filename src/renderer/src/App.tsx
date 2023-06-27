@@ -4,6 +4,7 @@ import { Charts } from './components/Charts'
 import { Speedtest } from './interfaces/Speedtest.interface'
 import { AppContext } from './contexts/App.context'
 import { configPtBr } from './utils/momentjs-pt-br.utils'
+import mp3Sound from './assets/sound.mp3'
 
 moment.updateLocale('pt-br', configPtBr)
 
@@ -49,8 +50,12 @@ function App(): JSX.Element {
     <AppContext.Provider value={appContext}>
       <div className="container">
         <button onClick={selectDirectory}>Selecionar Diretório</button>
-
         <Charts />
+        <audio controls>
+          {/* <source src="audio.ogg" type="audio/ogg" /> */}
+          <source src={mp3Sound} type="audio/mpeg" />
+          Your browser does not support the audio element.
+        </audio>
       </div>
     </AppContext.Provider>
   )

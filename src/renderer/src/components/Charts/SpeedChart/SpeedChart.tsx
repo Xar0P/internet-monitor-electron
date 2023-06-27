@@ -13,7 +13,7 @@ import { Line } from 'react-chartjs-2'
 import { Container } from './SpeedChart.styles'
 import { AppContext } from '../../../contexts/App.context'
 import moment from 'moment'
-import { DefaultChart } from '../../../interfaces/DefaultChart.interface'
+// import { DefaultChart } from '../../../interfaces/DefaultChart.interface'
 import { DEFAULTCHART } from '../../../constants/DefaultChart.constant'
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
