@@ -58,7 +58,7 @@ const SpeedChart: React.FC = () => {
         grid: {
           drawOnChartArea: false
         },
-        max: Math.floor(maxPing * 1.02),
+        max: Math.floor(maxPing * 1.02) < 10 ? 20 : Math.floor(maxPing * 1.02),
         ticks: {
           stepSize: Math.floor(maxPing / 4),
           color: '#fff'
