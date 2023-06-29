@@ -32,6 +32,20 @@ const SpeedChart: React.FC = () => {
         : 0,
     [recentData]
   )
+  const maxDownload = useMemo(
+    () =>
+      recentData && recentData.length > 0
+        ? recentData.reduce((pv, cr) => Math.max(pv, cr.download), -Infinity)
+        : 0,
+    [recentData]
+  )
+  const maxUpload = useMemo(
+    () =>
+      recentData && recentData.length > 0
+        ? recentData.reduce((pv, cr) => Math.max(pv, cr.upload), -Infinity)
+        : 0,
+    [recentData]
+  )
 
   const options = {
     responsive: true,
@@ -58,7 +72,14 @@ const SpeedChart: React.FC = () => {
         grid: {
           drawOnChartArea: false
         },
-        max: Math.floor(maxPing * 1.02) < 10 ? 20 : Math.floor(maxPing * 1.02),
+        max:
+          maxDownload > maxPing
+            ? maxDownload
+            : maxUpload > maxPing
+            ? maxPing
+            : Math.floor(maxPing * 1.02) < 10
+            ? 20
+            : Math.floor(maxPing * 1.02),
         ticks: {
           stepSize: Math.floor(maxPing / 4),
           color: '#fff'
@@ -75,8 +96,6 @@ const SpeedChart: React.FC = () => {
       }
     }
   }
-
-  console.log(maxPing)
 
   useEffect(() => {
     const labels = recentData ? recentData.map((data) => moment(data.date).format('LT')) : []

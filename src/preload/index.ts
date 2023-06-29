@@ -19,6 +19,7 @@ export interface Config {
 const api = {
   speedTest: async (): Promise<Speedtest> => await speedTest(),
   selectDirectory: (): void => selectDirectory(),
+  hasDirectory: (): string => directory,
   readSummaryFile: async (): Promise<Speedtest[] | null> => await readSummaryFile()
 }
 

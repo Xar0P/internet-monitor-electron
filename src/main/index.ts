@@ -77,6 +77,8 @@ ipcMain.on('selectDirectory', () => {
 const addToConfigFile = (prop: string, value: string): void => {
   const path = app.getPath('userData') + '/config.json'
 
+  console.log(path)
+
   if (existsSync(path)) {
     fs.readFile(path, 'utf-8', (_, data) => {
       const json = JSON.parse(data)

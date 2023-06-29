@@ -11,6 +11,8 @@ moment.updateLocale('pt-br', configPtBr)
 function App(): JSX.Element {
   const [speedTest, setSpeedtest] = useState<Speedtest | null>(null)
   const [recentData, setRecentData] = useState<Array<Speedtest> | null>(null)
+  const hasDirectory = useMemo(() => window.api.hasDirectory(), [window])
+
   const appContext = useMemo(
     () => ({
       recentData: recentData || null
@@ -49,13 +51,26 @@ function App(): JSX.Element {
   return (
     <AppContext.Provider value={appContext}>
       <div className="container">
-        <button onClick={selectDirectory}>Selecionar Diretório</button>
-        <Charts />
-        <audio controls>
-          {/* <source src="audio.ogg" type="audio/ogg" /> */}
-          <source src={mp3Sound} type="audio/mpeg" />
-          Your browser does not support the audio element.
-        </audio>
+        {hasDirectory ? (
+          <>
+            <Charts />
+            <audio controls>
+              {/* <source src="audio.ogg" type="audio/ogg" /> */}
+              <source src={mp3Sound} type="audio/mpeg" />
+              Your browser does not support the audio element.
+            </audio>
+            <button onClick={selectDirectory}>Mudar o diretório</button>
+          </>
+        ) : (
+          <>
+            <p>
+              É NECESSÁRIO VOCÊ SELECIONAR UM DIRETÓRIO PARA SALVAR OS ARQUIVOS DE INTERNET (CASO
+              FOR CRIAR EM DOCUMENTOS/DOWNLOADS/IMAGENS/VIDEOS/ETC... CRIE UMA PASTA E SELECIONE
+              ELA)
+            </p>
+            <button onClick={selectDirectory}>Selecionar Diretório</button>
+          </>
+        )}
       </div>
     </AppContext.Provider>
   )
