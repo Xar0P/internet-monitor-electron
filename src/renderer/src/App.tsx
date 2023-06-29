@@ -4,7 +4,6 @@ import { Charts } from './components/Charts'
 import { Speedtest } from './interfaces/Speedtest.interface'
 import { AppContext } from './contexts/App.context'
 import { configPtBr } from './utils/momentjs-pt-br.utils'
-import mp3Sound from './assets/sound.mp3'
 
 moment.updateLocale('pt-br', configPtBr)
 
@@ -46,24 +45,17 @@ function App(): JSX.Element {
     return () => clearInterval(interval)
   }, [])
 
-  const audio = new Audio(mp3Sound)
-
-  const start = (): void => {
-    audio.play()
-  }
-
   return (
     <AppContext.Provider value={appContext}>
       <div className="container">
         {hasDirectory ? (
           <>
             <Charts />
-            <button onClick={start}>Play</button>
-            {/* <button onClick={selectDirectory}>Mudar o diretório</button> */}
+            <button onClick={selectDirectory}>Mudar o diretório</button>
           </>
         ) : (
           <>
-            <p>É NECESSÁRIO VOCÊ SELECIONAR UM DIRETÓRIO PARA SALVAR OS ARQUIVOS DE INTERNET</p>
+            <p>SELECIONE UM DIRETÓRIO PARA SALVAR OS ARQUIVOS DE TESTE DE INTERNET</p>
             <button onClick={selectDirectory}>Selecionar Diretório</button>
           </>
         )}
