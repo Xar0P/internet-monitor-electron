@@ -12,14 +12,12 @@ function App(): JSX.Element {
   const [speedTest, setSpeedtest] = useState<Speedtest | null>(null)
   const [recentData, setRecentData] = useState<Array<Speedtest> | null>(null)
   const hasDirectory = useMemo(() => window.api.hasDirectory(), [window])
-
   const appContext = useMemo(
     () => ({
       recentData: recentData || null
     }),
     [speedTest, recentData]
   )
-
   const speedTestFC = async (): Promise<void> => setSpeedtest(await window.api.speedTest())
   const selectDirectory = (): void => window.api.selectDirectory()
 
@@ -48,26 +46,24 @@ function App(): JSX.Element {
     return () => clearInterval(interval)
   }, [])
 
+  const audio = new Audio(mp3Sound)
+
+  const start = (): void => {
+    audio.play()
+  }
+
   return (
     <AppContext.Provider value={appContext}>
       <div className="container">
         {hasDirectory ? (
           <>
             <Charts />
-            <audio controls>
-              {/* <source src="audio.ogg" type="audio/ogg" /> */}
-              <source src={mp3Sound} type="audio/mpeg" />
-              Your browser does not support the audio element.
-            </audio>
-            <button onClick={selectDirectory}>Mudar o diretório</button>
+            <button onClick={start}>Play</button>
+            {/* <button onClick={selectDirectory}>Mudar o diretório</button> */}
           </>
         ) : (
           <>
-            <p>
-              É NECESSÁRIO VOCÊ SELECIONAR UM DIRETÓRIO PARA SALVAR OS ARQUIVOS DE INTERNET (CASO
-              FOR CRIAR EM DOCUMENTOS/DOWNLOADS/IMAGENS/VIDEOS/ETC... CRIE UMA PASTA E SELECIONE
-              ELA)
-            </p>
+            <p>É NECESSÁRIO VOCÊ SELECIONAR UM DIRETÓRIO PARA SALVAR OS ARQUIVOS DE INTERNET</p>
             <button onClick={selectDirectory}>Selecionar Diretório</button>
           </>
         )}
