@@ -11,7 +11,7 @@ export const Container = styled.div`
   font-size: 40px;
   color: #fff;
 
-  > div {
+  & > div {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -21,17 +21,17 @@ export const Container = styled.div`
   }
 
   & > div:nth-of-type(1) {
-    background-color: #974b62;
-    border: 3px solid #ff6384;
+    background-color: rgba(96, 171, 154, 0.5);
+    border: 3px solid rgb(96, 171, 154);
   }
 
   & > div:nth-of-type(2) {
-    background-color: #326a96;
-    border: 3px solid #35a2eb;
+    background-color: rgba(53, 162, 235, 0.5);
+    border: 3px solid rgb(53, 162, 235);
   }
 
   & > div:nth-of-type(3) {
-    background-color: #495da0;
-    border: 3px solid #636dff;
+    background-color: rgba(222, 222, 224, 0.5);
+    border: 3px solid rgb(222, 222, 224);
   }
 `

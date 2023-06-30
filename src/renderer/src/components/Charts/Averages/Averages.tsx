@@ -16,7 +16,7 @@ const getAverage = (
 
 const Averages: React.FC = () => {
   const { recentData } = useContext(AppContext)
-  const [minAcceptableDownload, setMinAcceptableDownload] = useState<number>(240)
+  const [minAcceptableDownload, setMinAcceptableDownload] = useState<number>(10)
   const [minAcceptableUpload, setMinAcceptableUpload] = useState<number>(0)
   const [maxAcceptablePing, setMinAcceptablePing] = useState<number>(Infinity)
   const downloadAverage = useMemo(

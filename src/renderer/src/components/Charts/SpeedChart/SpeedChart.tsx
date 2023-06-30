@@ -109,8 +109,8 @@ const SpeedChart: React.FC = () => {
           borderWidth: borderWidthChart,
           hitRadius: pointWidthChart,
           pointRadius: pointWidthChart,
-          borderColor: 'rgb(255, 99, 132)',
-          backgroundColor: 'rgba(255, 99, 132, 0.5)',
+          borderColor: 'rgb(96,171,154)',
+          backgroundColor: 'rgba(96,171,154, 0.5)',
           yAxisID: 'y'
         },
         {
@@ -129,8 +129,8 @@ const SpeedChart: React.FC = () => {
           borderWidth: borderWidthChart,
           hitRadius: pointWidthChart,
           pointRadius: pointWidthChart,
-          borderColor: 'rgb(99, 109, 255)',
-          backgroundColor: 'rgba(99, 135, 255, 0.5)',
+          borderColor: 'rgb(222,222,224)',
+          backgroundColor: 'rgba(222,222,224, 0.5)',
           yAxisID: 'y1'
         }
       ]
