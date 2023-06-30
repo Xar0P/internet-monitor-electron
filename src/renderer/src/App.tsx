@@ -4,16 +4,26 @@ import { Charts } from './components/Charts'
 import { Speedtest } from './interfaces/Speedtest.interface'
 import { AppContext } from './contexts/App.context'
 import { configPtBr } from './utils/momentjs-pt-br.utils'
+import { Config } from './components'
 
 moment.updateLocale('pt-br', configPtBr)
 
 function App(): JSX.Element {
   const [speedTest, setSpeedtest] = useState<Speedtest | null>(null)
   const [recentData, setRecentData] = useState<Array<Speedtest> | null>(null)
+  const [minAcceptableDownload, setMinAcceptableDownload] = useState<number>(0)
+  const [minAcceptableUpload, setMinAcceptableUpload] = useState<number>(0)
+  const [maxAcceptablePing, setMaxAcceptablePing] = useState<number>(Infinity)
   const hasDirectory = useMemo(() => window.api.hasDirectory(), [window])
   const appContext = useMemo(
     () => ({
-      recentData: recentData || null
+      recentData: recentData || null,
+      minAcceptableDownload,
+      minAcceptableUpload,
+      maxAcceptablePing,
+      setMinAcceptableDownload,
+      setMinAcceptableUpload,
+      setMaxAcceptablePing
     }),
     [speedTest, recentData]
   )
@@ -51,7 +61,7 @@ function App(): JSX.Element {
         {hasDirectory ? (
           <>
             <Charts />
-            <button onClick={selectDirectory}>Mudar o diretório</button>
+            <Config />
           </>
         ) : (
           <>
