@@ -14,11 +14,24 @@ export interface Speedtest {
 
 export interface Config {
   directoryToSave: string
+  limits: {
+    download: number
+    upload: number
+    ping: number
+  }
+}
+
+export interface Limits {
+  download: number
+  upload: number
+  ping: number
 }
 
 const api = {
   speedTest: async (): Promise<Speedtest> => await speedTest(),
   selectDirectory: (): void => selectDirectory(),
+  saveLimits: (limits: Limits): void => saveLimits(limits),
+  getLimits: (): Limits | null => limits,
   hasDirectory: (): string => directory,
   readSummaryFile: async (): Promise<Speedtest[] | null> => await readSummaryFile()
 }
@@ -45,9 +58,11 @@ const getUserConfig = (callback: (config: Config) => void): void => {
 }
 
 let directory = ''
+let limits: Limits | null = null
 
 getUserConfig((config) => {
   directory = config.directoryToSave
+  limits = config.limits
 })
 
 const readSummaryFile = async (): Promise<Speedtest[] | null> => {
@@ -128,4 +143,8 @@ const speedTest = async (): Promise<Speedtest> => {
 
 const selectDirectory = (): void => {
   ipcRenderer.send('selectDirectory')
+}
+
+const saveLimits = (limits: Limits): void => {
+  ipcRenderer.send('saveLimits', limits)
 }

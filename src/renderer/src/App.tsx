@@ -16,6 +16,7 @@ function App(): JSX.Element {
   const [minAcceptableUpload, setMinAcceptableUpload] = useState<number>(0)
   const [maxAcceptablePing, setMaxAcceptablePing] = useState<number>(Infinity)
   const hasDirectory = useMemo(() => window.api.hasDirectory(), [window])
+  const limits = useMemo(() => window.api.getLimits(), [window])
   const appContext = useMemo(
     () => ({
       recentData: recentData || null,
@@ -56,6 +57,14 @@ function App(): JSX.Element {
     }, 1 * 60000)
 
     return () => clearInterval(interval)
+  }, [])
+
+  useEffect(() => {
+    if (limits) {
+      setMinAcceptableDownload(limits.download)
+      setMinAcceptableUpload(limits.upload)
+      setMaxAcceptablePing(limits.ping)
+    }
   }, [])
 
   return (

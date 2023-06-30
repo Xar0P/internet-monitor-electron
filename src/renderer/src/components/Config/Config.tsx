@@ -22,6 +22,7 @@ const Config: React.FC = () => {
     if (Number(minDownload)) {
       setMinAcceptableDownload(Number(minDownload))
       setMinDownload('')
+      console.log('setou')
     }
     if (Number(minUpload)) {
       setMinAcceptableUpload(Number(minUpload))
@@ -31,6 +32,12 @@ const Config: React.FC = () => {
       setMaxAcceptablePing(Number(maxPing))
       setMaxPing('')
     }
+
+    window.api.saveLimits({
+      download: Number(minDownload) || minAcceptableDownload,
+      upload: Number(minUpload) || minAcceptableUpload,
+      ping: Number(maxPing) || maxAcceptablePing
+    })
   }
 
   return (

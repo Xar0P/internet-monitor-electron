@@ -4,6 +4,7 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import fs, { existsSync } from 'fs'
 import fsPromises from 'fs/promises'
+import { Limits } from '../preload'
 
 function createWindow(): void {
   const mainWindow = new BrowserWindow({
@@ -74,7 +75,12 @@ ipcMain.on('selectDirectory', () => {
     .catch((err) => console.log(err))
 })
 
-const addToConfigFile = (prop: string, value: string): void => {
+ipcMain.on('saveLimits', (_, limits: Limits) => {
+  addToConfigFile('limits', limits)
+})
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const addToConfigFile = (prop: string, value: any): void => {
   const path = app.getPath('userData') + '/config.json'
 
   console.log(path)
