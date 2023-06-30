@@ -19,15 +19,15 @@ const Config: React.FC = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
 
-    if (Number(minDownload) || Number(minDownload) === 0) {
+    if (Number(minDownload)) {
       setMinAcceptableDownload(Number(minDownload))
       setMinDownload('')
     }
-    if (Number(minUpload) || Number(minUpload) === 0) {
+    if (Number(minUpload)) {
       setMinAcceptableUpload(Number(minUpload))
       setMinUpload('')
     }
-    if (Number(maxPing) || Number(maxPing) === 0) {
+    if (Number(maxPing)) {
       setMaxAcceptablePing(Number(maxPing))
       setMaxPing('')
     }

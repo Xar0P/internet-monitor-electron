@@ -21,7 +21,7 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 const SpeedChart: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [data, setData] = useState<any>(DEFAULTCHART)
-  const { recentData } = useContext(AppContext)
+  const { recentData, hasAlert } = useContext(AppContext)
   const borderWidthChart = 4
   const pointWidthChart = 4
 
@@ -87,12 +87,16 @@ const SpeedChart: React.FC = () => {
       }
     },
     scaleFontColor: '#FFFFFF',
+    backgroundColor: '#fff',
     plugins: {
       legend: {
         position: 'top' as const,
         labels: {
           color: '#fff'
         }
+      },
+      customCanvasBackgroundColor: {
+        color: hasAlert ? 'red' : ''
       }
     }
   }
@@ -137,9 +141,22 @@ const SpeedChart: React.FC = () => {
     })
   }, [recentData])
 
+  const canvasBgColor = {
+    id: 'customCanvasBackgroundColor',
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    beforeDraw: (chart, _args, options) => {
+      const { ctx } = chart
+      ctx.save()
+      ctx.globalCompositeOperation = 'destination-over'
+      ctx.fillStyle = options.color || '#2f3241'
+      ctx.fillRect(0, 0, chart.width, chart.height)
+      ctx.restore()
+    }
+  }
+
   return (
     <Container>
-      <Line options={options} data={data} />
+      <Line options={options} plugins={[canvasBgColor]} data={data} />
     </Container>
   )
 }

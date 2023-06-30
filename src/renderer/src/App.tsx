@@ -10,6 +10,7 @@ moment.updateLocale('pt-br', configPtBr)
 
 function App(): JSX.Element {
   const [speedTest, setSpeedtest] = useState<Speedtest | null>(null)
+  const [hasAlert, setHasAlert] = useState<boolean>(false)
   const [recentData, setRecentData] = useState<Array<Speedtest> | null>(null)
   const [minAcceptableDownload, setMinAcceptableDownload] = useState<number>(0)
   const [minAcceptableUpload, setMinAcceptableUpload] = useState<number>(0)
@@ -23,7 +24,9 @@ function App(): JSX.Element {
       maxAcceptablePing,
       setMinAcceptableDownload,
       setMinAcceptableUpload,
-      setMaxAcceptablePing
+      setMaxAcceptablePing,
+      setHasAlert,
+      hasAlert
     }),
     [speedTest, recentData]
   )

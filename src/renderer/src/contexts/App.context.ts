@@ -9,6 +9,8 @@ export const AppContext = createContext<{
   setMinAcceptableDownload: React.Dispatch<React.SetStateAction<number>>
   setMinAcceptableUpload: React.Dispatch<React.SetStateAction<number>>
   setMaxAcceptablePing: React.Dispatch<React.SetStateAction<number>>
+  setHasAlert: React.Dispatch<React.SetStateAction<boolean>>
+  hasAlert: boolean
 }>({
   recentData: null,
   minAcceptableDownload: 0,
@@ -16,5 +18,7 @@ export const AppContext = createContext<{
   maxAcceptablePing: Infinity,
   setMinAcceptableDownload: () => {},
   setMinAcceptableUpload: () => {},
-  setMaxAcceptablePing: () => {}
+  setMaxAcceptablePing: () => {},
+  setHasAlert: () => {},
+  hasAlert: false
 })

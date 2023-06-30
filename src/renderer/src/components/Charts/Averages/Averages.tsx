@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, { useContext, useEffect, useMemo } from 'react'
 import { Container } from './Averages.styles'
 import { AppContext } from '../../../contexts/App.context'
 import { Speedtest } from '../../../interfaces/Speedtest.interface'
@@ -15,7 +15,7 @@ const getAverage = (
 }
 
 const Averages: React.FC = () => {
-  const { recentData, maxAcceptablePing, minAcceptableDownload, minAcceptableUpload } =
+  const { recentData, maxAcceptablePing, minAcceptableDownload, minAcceptableUpload, setHasAlert } =
     useContext(AppContext)
 
   const downloadAverage = useMemo(
@@ -35,8 +35,12 @@ const Averages: React.FC = () => {
         maxAcceptablePing < pingAverage
       ) {
         audio.play()
+
+        return setHasAlert(true)
       }
     }
+
+    return setHasAlert(false)
   }, [recentData])
 
   return (
