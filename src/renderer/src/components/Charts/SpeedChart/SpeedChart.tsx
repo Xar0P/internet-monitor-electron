@@ -146,10 +146,16 @@ const SpeedChart: React.FC = () => {
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     beforeDraw: (chart, _args, options) => {
       const { ctx } = chart
+      const chartArea = chart.chartArea
       ctx.save()
       ctx.globalCompositeOperation = 'destination-over'
       ctx.fillStyle = options.color || '#2f3241'
-      ctx.fillRect(0, 0, chart.width, chart.height)
+      ctx.fillRect(
+        chartArea.left,
+        chartArea.top,
+        chartArea.right - chartArea.left,
+        chartArea.bottom - chartArea.top
+      )
       ctx.restore()
     }
   }
